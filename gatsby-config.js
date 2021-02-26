@@ -1,17 +1,27 @@
+const siteMetadata = {
+  title: `The Localhost Blog`,
+  description: `This is my coding blog where I write about my coding journey.`,
+};
+
 module.exports = {
   siteMetadata: {
-    title: "blog",
+    title: `The Localhost Blog`,
+    description: `This is my coding blog where I write about my coding journey.`,
   },
   plugins: [
-    "gatsby-plugin-sharp",
-    "gatsby-transformer-sharp",
+    `gatsby-plugin-styled-components`,
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        name: "images",
-        path: "./src/images/",
+        extensions: [`.mdx`, `.md`],
       },
-      __key: "images",
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/posts`,
+        name: `posts`,
+      },
     },
   ],
 };
