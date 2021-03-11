@@ -1,6 +1,7 @@
 import { MDXProvider } from "@mdx-js/react";
 import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
+import theme from 'prism-react-renderer/themes/shadesOfPurple'
 
 const components = {
   h2: ({ children }) => <h2 style={{ color: "rebeccapurple" }}>{children}</h2>,
@@ -16,6 +17,7 @@ const components = {
         {...defaultProps}
         code={props.children.props.children.trim()}
         language={matches && matches.groups && matches.groups.lang ? matches.groups.lang : '' }
+        theme={theme}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={className} style={style}>
