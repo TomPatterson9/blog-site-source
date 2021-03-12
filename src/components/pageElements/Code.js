@@ -2,8 +2,15 @@ import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/shadesOfPurple";
 import  styled from "styled-components";
+import { copyToClipboard } from "../../utils/copy-to-clipboard";
+import '../../Styles/app.css';
 
+
+/**
+ * Styling for the code block
+ */
 const Pre = styled.pre`
+  position:relative;
   text-align: left;
   margin: 1em 0;
   padding: 0.5em;
@@ -14,7 +21,7 @@ const Pre = styled.pre`
     line-height: 1.3em;
     height: 1.3em;
   }
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Roboto', sans-serif;
 `
 
 const LineNo = styled.span `
@@ -22,9 +29,26 @@ const LineNo = styled.span `
   width: 2em;
   user-select:none;
   opacity: 0.5;
-
+`
+const CopyCode = styled.button`
+  position: absolute;
+  right: 0.25rem;
+  border: 0;
+  border-radius: 2px;
+  margin:.25em;
+  padding:3px 5px;
+  opacity: 0.6;
+  &:hover{
+    opacity:1;
+  }
+  
 `
 export const Code = ({codeString, language, ...props}) => {
+
+  const handleClick = () => {
+    copyToClipboard(codeString)
+  }
+
   return (
     <Highlight
       {...defaultProps}
@@ -34,6 +58,7 @@ export const Code = ({codeString, language, ...props}) => {
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <Pre className={className} style={style}>
+          <CopyCode onClick={handleClick}>Copy</CopyCode>
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })}>
               <LineNo>{i+1}</LineNo>
