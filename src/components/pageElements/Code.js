@@ -1,53 +1,61 @@
 import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/shadesOfPurple";
-import  styled from "styled-components";
+import styled from "styled-components";
 import { copyToClipboard } from "../../utils/copy-to-clipboard";
-import '../../Styles/app.css';
-
+import "../../Styles/app.css";
+import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 
 /**
  * Styling for the code block
  */
 const Pre = styled.pre`
-  position:relative;
+  position: relative;
   text-align: left;
   margin: 1em 0;
   padding: 0.5em;
-  overflow-x:auto;
-  border-radius:3px;
+  overflow-x: auto;
+  border-radius: 3px;
 
   & .token-line {
     line-height: 1.3em;
     height: 1.3em;
   }
-  font-family: 'Roboto', sans-serif;
-`
+  font-family: "Roboto", sans-serif;
+`;
 
-const LineNo = styled.span `
-  display:inline-block;
+const LineNo = styled.span`
+  display: inline-block;
   width: 2em;
-  user-select:none;
+  user-select: none;
   opacity: 0.5;
-`
+`;
 const CopyCode = styled.button`
   position: absolute;
   right: 0.25rem;
   border: 0;
   border-radius: 2px;
-  margin:.25em;
-  padding:3px 5px;
+  margin: 0.25em;
+  padding: 3px 5px;
   opacity: 0.6;
-  &:hover{
-    opacity:1;
+  &:hover {
+    opacity: 1;
   }
-  
-`
-export const Code = ({codeString, language, ...props}) => {
+`;
+export const Code = ({ codeString, language, ...props }) => {
+  if (props["react-live"]) { 
+    return (
+      <LiveProvider code={codeString} noInline={true} theme={theme}>
+        <LiveEditor />
+        <LiveError />
+        <LivePreview />
+      </LiveProvider>
+      )
+  }
 
   const handleClick = () => {
-    copyToClipboard(codeString)
-  }
+    copyToClipboard(codeString);
+  };
 
   return (
     <Highlight
@@ -61,7 +69,7 @@ export const Code = ({codeString, language, ...props}) => {
           <CopyCode onClick={handleClick}>Copy</CopyCode>
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })}>
-              <LineNo>{i+1}</LineNo>
+              <LineNo>{i + 1}</LineNo>
               {line.map((token, key) => (
                 <span {...getTokenProps({ token, key })} />
               ))}
